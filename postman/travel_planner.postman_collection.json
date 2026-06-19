@@ -1,0 +1,245 @@
+{
+  "info": {
+    "name": "Travel Planner API",
+    "description": "A management application that helps travellers plan trips and collect desired places to visit.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "project_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "place_id",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/health"
+          }
+        },
+        {
+          "name": "Root",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "Create Project (minimal)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/projects",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Europe Art Tour\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Project (full)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/projects",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chicago Art Tour\",\n  \"description\": \"Visit famous artworks at the Art Institute of Chicago\",\n  \"start_date\": \"2026-08-01\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Project with Places",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/projects",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Must-See Masterpieces\",\n  \"description\": \"Top artworks to visit\",\n  \"start_date\": \"2026-09-01\",\n  \"places\": [\n    {\"external_id\": 129884},\n    {\"external_id\": 27992}\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "List Projects",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/projects?page=1&per_page=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "projects"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "per_page", "value": "10"},
+                {"key": "status", "value": "planning", "disabled": true},
+                {"key": "search", "value": "europe", "disabled": true}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Project",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/projects/{{project_id}}"
+          }
+        },
+        {
+          "name": "Update Project",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/api/v1/projects/{{project_id}}",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Europe Tour\",\n  \"description\": \"Updated description\",\n  \"start_date\": \"2026-08-15\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Project",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/v1/projects/{{project_id}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Places",
+      "item": [
+        {
+          "name": "Add Place to Project",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/projects/{{project_id}}/places",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_id\": 129884\n}"
+            }
+          }
+        },
+        {
+          "name": "Add Another Place (La Grande Jatte)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/projects/{{project_id}}/places",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_id\": 27992\n}"
+            }
+          }
+        },
+        {
+          "name": "List Places",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/projects/{{project_id}}/places?page=1&per_page=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "projects", "{{project_id}}", "places"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "per_page", "value": "10"},
+                {"key": "visited", "value": "false", "disabled": true}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Place",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/projects/{{project_id}}/places/{{place_id}}"
+          }
+        },
+        {
+          "name": "Update Place Notes",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/api/v1/projects/{{project_id}}/places/{{place_id}}",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Amazing artwork, must take a photo!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Mark Place as Visited",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/api/v1/projects/{{project_id}}/places/{{place_id}}",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"visited\": true\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
